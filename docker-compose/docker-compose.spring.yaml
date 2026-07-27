@@ -1,0 +1,16 @@
+services:
+  ecommerce-e1-api:
+    image: ecommerce-e1-api:latest
+    build:
+      context: ..
+      dockerfile: docker-compose/Dockerfile
+    ports:
+      - "8081:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://ecommerce-db-e1:5432/db_commerce
+    networks:
+      - e1-net
+
+networks:
+  e1-net:
+    external: true
