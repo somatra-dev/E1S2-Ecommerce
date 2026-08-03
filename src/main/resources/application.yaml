@@ -40,5 +40,10 @@ spring:
     multipart:
       max-file-size: 10MB
       max-request-size: 10MB
-
+springdoc:
+  swagger-ui:
+    oauth:
+      client-id: postman
+      client-secret: aMkzTqFZN6KCIMStRIlzO2JAvi98PYXr
+      use-pkce-with-authorization-code-grant: true
 

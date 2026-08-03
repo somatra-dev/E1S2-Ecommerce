@@ -3,6 +3,8 @@ package co.istad.matra.ecommerce.features.auth.service.impl;
 import co.istad.matra.ecommerce.features.auth.dto.RegisterResponse;
 import co.istad.matra.ecommerce.features.auth.dto.UserRegisterRequest;
 import co.istad.matra.ecommerce.features.auth.service.AuthService;
+import co.istad.matra.ecommerce.features.userprofile.UserProfile;
+import co.istad.matra.ecommerce.features.userprofile.UserProfileRepository;
 import co.istad.matra.ecommerce.security.keycloak.KeycloakProperties;
 import jakarta.ws.rs.core.Response;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +28,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final Keycloak keycloak;
     private final KeycloakProperties keycloakProperties;
+    private final UserProfileRepository userProfileRepository;
 
     @Override
     public RegisterResponse register(UserRegisterRequest registerRequest) {
@@ -70,6 +73,11 @@ public class AuthServiceImpl implements AuthService {
                 UserRepresentation userRepresentation = usersResource.search(user.getUsername())
                         .getFirst();
                 log.info("User ID: {}", userRepresentation.getId());
+
+                // Start saving user into database
+                UserProfile userProfile = new UserProfile();
+                userProfile.setUserId(userRepresentation.getId());
+                userProfileRepository.save(userProfile);
 
                 return RegisterResponse.builder()
                         .userId(userRepresentation.getId())

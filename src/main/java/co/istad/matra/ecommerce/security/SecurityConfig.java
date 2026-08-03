@@ -38,12 +38,13 @@ public class SecurityConfig {
 
         // 3. Endpoints security
         http.authorizeHttpRequests(endpoint -> endpoint
-                .requestMatchers(HttpMethod.GET, "/api/v1/products/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/v1/products").authenticated()
                 .requestMatchers(HttpMethod.GET, "/api/v1/categories/**").permitAll()
-                .requestMatchers("/scalar", "/v3/api/**").permitAll()
+                .requestMatchers("/scalar", "/scalar/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .requestMatchers("/api/v1/files/**").permitAll()
                 .requestMatchers("/file/**").permitAll()
-                .anyRequest().permitAll()
+                .requestMatchers("/api/v1/auth/**").permitAll()
+                .anyRequest().authenticated()
         );
 
         // 4. Disable CSRF token
